@@ -1,6 +1,13 @@
+import { useEffect } from 'react';
 import * as S from './styles';
 
 export function TransactionsTable() {
+  useEffect(() => {
+    fetch('http://localhost:3000/transactions')
+      .then(response => response.json())
+      .then(data => console.log(data));
+  }, []);
+  
   return (
     <S.Container>
       <table>
