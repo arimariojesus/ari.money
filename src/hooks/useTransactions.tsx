@@ -19,14 +19,13 @@ interface TransactionsProviderProps {
 interface TransactionsContextProps {
   transactions: Transaction[];
   addTransaction: (transaction: TransactionInput) => Promise<void>;
+  delTransaction: (id: number) => Promise<void>;
 }
 
 const TransactionsContext = createContext<TransactionsContextProps>({} as TransactionsContextProps);
 
 export const TransactionsProvider = ({ children }: TransactionsProviderProps) => {
-  const [transactions, setTransactions] = useState<Transaction[]>(
-    [] as Transaction[]
-  );
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     api
@@ -46,11 +45,19 @@ export const TransactionsProvider = ({ children }: TransactionsProviderProps) =>
       transaction,
     ]));
   }
+
+  async function delTransaction(id: number) {
+    await api.delete(`/transactions/${id}`);
+    api
+      .get("/transactions")
+      .then((response) => setTransactions(response.data.transactions));
+  }
   
   return (
     <TransactionsContext.Provider value={{
       transactions,
       addTransaction,
+      delTransaction,
     }}>
       {children}
     </TransactionsContext.Provider>
