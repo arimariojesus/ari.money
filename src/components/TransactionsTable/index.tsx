@@ -3,7 +3,7 @@ import { formatCurrenyValue, formatDateTime } from "../../utils";
 import * as S from "./styles";
 
 export function TransactionsTable() {
-  const { transactions } = useTransactions();
+  const { transactions, delTransaction } = useTransactions();
 
   return (
     <S.Container>
@@ -24,6 +24,21 @@ export function TransactionsTable() {
               <td>{transaction.category}</td>
               <td>
                 {formatDateTime(transaction.createdAt)}
+              </td>
+              <td>
+                <button
+                  style={{
+                    color: 'red',
+                    fontWeight: 600,
+                    border: 'none',
+                    background: 'none',
+                    height: '30px',
+                    width: '30px',
+                  }}
+                  onClick={() => delTransaction(transaction.id)}
+                >
+                  -
+                </button>
               </td>
             </tr>
           ))}
