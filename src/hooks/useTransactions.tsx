@@ -1,16 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { api } from '../services/api';
 
-interface Transaction {
-  id: number;
-  title: string;
-  type: "deposit" | "withdraw";
-  category: string;
-  amount: number;
-  createdAt: string;
-}
-
-type TransactionInput = Omit<Transaction, 'id' | 'createdAt'>;
+import { Transaction, TransactionInput } from '../types/transaction';
+import { storageTransactions } from '../utils';
 
 interface TransactionsProviderProps {
   children: ReactNode;
@@ -28,17 +19,17 @@ export const TransactionsProvider = ({ children }: TransactionsProviderProps) =>
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    api
-      .get("/transactions")
-      .then((response) => setTransactions(response.data.transactions));
+    setTransactions(storageTransactions.getAll());
   }, []);
 
   async function addTransaction(transactionInput: TransactionInput) {
-    const response = await api.post('/transactions', {
+    const transaction = {
       ...transactionInput,
+      id: Date.now(),
       createdAt: new Date(),
-    });
-    const { transaction } = response.data;
+    };
+    
+    storageTransactions.add(transaction);
 
     setTransactions(oldTransactions => ([
       ...oldTransactions,
@@ -47,10 +38,8 @@ export const TransactionsProvider = ({ children }: TransactionsProviderProps) =>
   }
 
   async function delTransaction(id: number) {
-    await api.delete(`/transactions/${id}`);
-    api
-      .get("/transactions")
-      .then((response) => setTransactions(response.data.transactions));
+    storageTransactions.remote(id);
+    setTransactions(storageTransactions.getAll());
   }
   
   return (
