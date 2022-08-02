@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   margin-top: 4rem;
@@ -12,7 +12,7 @@ export const Container = styled.div`
       font-weight: 400;
       padding: 1rem 2rem;
       text-align: left;
-      line-height: 1.5rem; 
+      line-height: 1.5rem;
     }
 
     td {
@@ -34,5 +34,18 @@ export const Container = styled.div`
         color: var(--red);
       }
     }
+  }
+`;
+
+export const RemoveButton = styled.button`
+  border: none;
+  background: none;
+
+  & > img {
+    vertical-align: middle;
+  }
+
+  &:hover {
+    filter: brightness(0.9);
   }
 `;

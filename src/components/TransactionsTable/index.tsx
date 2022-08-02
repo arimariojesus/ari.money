@@ -1,5 +1,6 @@
 import { useTransactions } from "../../hooks/useTransactions";
 import { formatCurrenyValue, formatDateTime } from "../../utils";
+import minusImg from "../../assets/minus.svg";
 import * as S from "./styles";
 
 export function TransactionsTable() {
@@ -24,23 +25,14 @@ export function TransactionsTable() {
                 {formatCurrenyValue(transaction.amount)}
               </td>
               <td>{transaction.category}</td>
+              <td>{formatDateTime(transaction.createdAt)}</td>
               <td>
-                {formatDateTime(transaction.createdAt)}
-              </td>
-              <td>
-                <button
-                  style={{
-                    color: 'red',
-                    fontWeight: 600,
-                    border: 'none',
-                    background: 'none',
-                    height: '30px',
-                    width: '30px',
-                  }}
+                <S.RemoveButton
+                  type="button"
                   onClick={() => delTransaction(transaction.id)}
                 >
-                  -
-                </button>
+                  <img src={minusImg} alt="Remover transação" />
+                </S.RemoveButton>
               </td>
             </tr>
           ))}
