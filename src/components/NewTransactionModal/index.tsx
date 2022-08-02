@@ -22,12 +22,16 @@ export function NewTransactionModal({
   const { addTransaction } = useTransactions();
 
   const [title, setTitle] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number | undefined>(undefined);
   const [category, setCategory] = useState('');
   const [type, setType] = useState<TransactionType>("deposit");
 
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
+
+    if (amount === undefined) {
+      return;
+    }
 
     const data = {
       title,
