@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useMemo } from "react";
 
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
@@ -21,9 +21,9 @@ export function NewTransactionModal({
 }: NewTransactionModalProps) {
   const { addTransaction } = useTransactions();
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [amount, setAmount] = useState<number | undefined>(undefined);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   const [type, setType] = useState<TransactionType>("deposit");
 
   async function handleCreateNewTransaction(event: FormEvent) {
@@ -42,11 +42,16 @@ export function NewTransactionModal({
 
     await addTransaction(data);
 
-    setTitle('');
+    setTitle("");
     setAmount(0);
-    setCategory('');
+    setCategory("");
     onRequestClose();
   }
+
+  const canSubmit = useMemo(
+    () => title && category && !Number.isNaN(amount),
+    [title, amount, category]
+  );
 
   return (
     <Modal
@@ -70,21 +75,21 @@ export function NewTransactionModal({
           type="text"
           placeholder="Título"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <input
           type="number"
           placeholder="Valor"
           value={amount}
-          onChange={e => setAmount(Number(e.target.value))}
+          onChange={(e) => setAmount(Number(e.target.value))}
         />
 
         <S.TransactionTypeContainer>
           <S.RadioBox
             type="button"
             onClick={() => setType("deposit")}
-            isActive={type === 'deposit'}
+            isActive={type === "deposit"}
             activeColor="green"
           >
             <img src={incomeImg} alt="Entrada" />
@@ -94,7 +99,7 @@ export function NewTransactionModal({
           <S.RadioBox
             type="button"
             onClick={() => setType("withdraw")}
-            isActive={type === 'withdraw'}
+            isActive={type === "withdraw"}
             activeColor="red"
           >
             <img src={outcomeImg} alt="Saída" />
@@ -106,10 +111,12 @@ export function NewTransactionModal({
           type="text"
           placeholder="Categoria"
           value={category}
-          onChange={e => setCategory(e.target.value)}
+          onChange={(e) => setCategory(e.target.value)}
         />
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit" disabled={!canSubmit}>
+          Cadastrar
+        </button>
       </S.Container>
     </Modal>
   );
