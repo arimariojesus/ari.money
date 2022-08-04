@@ -12,6 +12,11 @@ export const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
+  @media (max-width: 468px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 
   button {
     font-size: 1rem;

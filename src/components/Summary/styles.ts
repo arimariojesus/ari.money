@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
-export const Container =styled.div`
+export const Container =styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-top: -10rem;
+
+  @media (max-width: 800px) {
+    grid-template-columns: auto;
+    grid-template-rows: repeat(3, 1fr);
+  }
 
   & > div {
     background: var(--shape);
