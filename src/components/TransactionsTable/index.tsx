@@ -29,6 +29,7 @@ export function TransactionsTable() {
               <td>
                 <S.RemoveButton
                   type="button"
+                  title="Remover transação"
                   onClick={() => delTransaction(transaction.id)}
                 >
                   <img src={minusImg} alt="Remover transação" />
