@@ -16,7 +16,7 @@ describe("Header", () => {
   
   it("should img have correct src", () => {
     makeSut();
-    expect(screen.getByAltText('ari money')).toHaveAttribute('src', logoImg);
+    expect(screen.getByRole('img', { name: 'ari money' })).toHaveAttribute('src', logoImg);
   });
   
   it("should call function on click new transaction button", () => {
