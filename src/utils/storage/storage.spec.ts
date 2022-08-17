@@ -25,7 +25,7 @@ describe("StorageTransactions", () => {
       expect(window.localStorage.getItem(key)).toStrictEqual(
         JSON.stringify([transactionsMock[0]])
       );
-      
+
       storageTransactions.add(transactionsMock[1]);
 
       expect(window.localStorage.getItem(key)).toStrictEqual(
@@ -39,6 +39,24 @@ describe("StorageTransactions", () => {
       window.localStorage.setItem(key, JSON.stringify(transactionsMock));
 
       expect(storageTransactions.getAll()).toStrictEqual(transactionsMock);
+    });
+  });
+
+  describe("remove()", () => {
+    it("should remove the item from localStorage", () => {
+      window.localStorage.setItem(key, JSON.stringify(transactionsMock));
+
+      storageTransactions.remove(transactionsMock[0].id);
+
+      expect(window.localStorage.getItem(key)).toStrictEqual(
+        JSON.stringify(transactionsMock.slice(1))
+      );
+
+      storageTransactions.remove(transactionsMock[1].id);
+
+      expect(window.localStorage.getItem(key)).toStrictEqual(
+        JSON.stringify(transactionsMock.slice(2))
+      );
     });
   });
 });
