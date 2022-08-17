@@ -10,7 +10,7 @@ const makeSut = (): void => {
   render(<Summary />);
 };
 
-describe("Header", () => {
+describe("Summary", () => {
   it("should render titles", () => {
     makeSut();
     expect(screen.getByText(/entradas/i)).toBeInTheDocument();
