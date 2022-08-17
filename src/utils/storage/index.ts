@@ -11,8 +11,12 @@ class StorageTransactions {
     const value = localStorage.getItem(this.key);
     
     if (!value) return [];
+
+    const transactions = Array(...JSON.parse(value)).map<Transaction>(transaction => {
+      return { ...transaction, createdAt: new Date(transaction.createdAt) };
+    });
     
-    return JSON.parse(value) as Transaction[];
+    return transactions;
   }
 
   add (transaction: Transaction): void {
