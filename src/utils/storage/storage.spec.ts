@@ -17,4 +17,20 @@ describe("StorageTransactions", () => {
       );
     });
   });
+
+  describe("add()", () => {
+    it("should add the item to localStorage", () => {
+      storageTransactions.add(transactionsMock[0]);
+
+      expect(window.localStorage.getItem(key)).toStrictEqual(
+        JSON.stringify([transactionsMock[0]])
+      );
+      
+      storageTransactions.add(transactionsMock[1]);
+
+      expect(window.localStorage.getItem(key)).toStrictEqual(
+        JSON.stringify([transactionsMock[0], transactionsMock[1]])
+      );
+    });
+  });
 });
