@@ -33,4 +33,12 @@ describe("StorageTransactions", () => {
       );
     });
   });
+
+  describe("getAll()", () => {
+    it("should return the items from localStorage", () => {
+      window.localStorage.setItem(key, JSON.stringify(transactionsMock));
+
+      expect(storageTransactions.getAll()).toStrictEqual(transactionsMock);
+    });
+  });
 });
