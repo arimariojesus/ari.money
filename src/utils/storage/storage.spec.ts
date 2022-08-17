@@ -59,4 +59,18 @@ describe("StorageTransactions", () => {
       );
     });
   });
+
+  describe("clear()", () => {
+    it("should clear the items from localStorage", () => {
+      window.localStorage.setItem(key, JSON.stringify(transactionsMock));
+
+      expect(window.localStorage.getItem(key)).toStrictEqual(
+        JSON.stringify(transactionsMock)
+      );
+
+      storageTransactions.clear();
+
+      expect(window.localStorage.getItem(key)).toBeNull();
+    });
+  });
 });
