@@ -1,7 +1,7 @@
-import { Transaction } from '../types/transaction'
+import { Transaction } from '../../types/transaction'
 
-export class StorageTransactions {
-  protected key = '@app:transactions';
+class StorageTransactions {
+  readonly key = '@app:transactions';
 
   set (transactions: Transaction[]): void {
     localStorage.setItem(this.key, JSON.stringify(transactions));
