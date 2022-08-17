@@ -25,7 +25,7 @@ class StorageTransactions {
     this.set(transactions)
   }
 
-  remote (id: number) {
+  remove (id: number) {
     const transactions = this.getAll();
     const newTransactions = transactions.filter(t => t.id !== id);
     this.set(newTransactions);

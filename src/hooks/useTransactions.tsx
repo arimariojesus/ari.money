@@ -38,7 +38,7 @@ export const TransactionsProvider = ({ children }: TransactionsProviderProps) =>
   }
 
   async function delTransaction(id: number) {
-    storageTransactions.remote(id);
+    storageTransactions.remove(id);
     setTransactions(storageTransactions.getAll());
   }
   
