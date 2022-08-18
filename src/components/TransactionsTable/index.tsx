@@ -1,5 +1,5 @@
 import { useTransactions } from "../../hooks/useTransactions";
-import { formatCurrenyValue, formatDateTime } from "../../utils";
+import { formatCurrencyValue, formatDateTime } from "../../utils";
 import minusImg from "../../assets/minus.svg";
 import * as S from "./styles";
 
@@ -22,7 +22,7 @@ export function TransactionsTable() {
             <tr key={transaction.id}>
               <td>{transaction.title}</td>
               <td className={transaction.type}>
-                {formatCurrenyValue(transaction.amount)}
+                {formatCurrencyValue(transaction.amount)}
               </td>
               <td>{transaction.category}</td>
               <td>{formatDateTime(transaction.createdAt)}</td>
