@@ -3,11 +3,11 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { Transaction, TransactionInput } from '../../types/transaction';
 import { storageTransactions } from '../../utils';
 
-interface TransactionsProviderProps {
+export interface TransactionsProviderProps {
   children: ReactNode;
 }
 
-interface TransactionsContextProps {
+export interface TransactionsContextProps {
   transactions: Transaction[];
   addTransaction: (transaction: TransactionInput) => Promise<void>;
   delTransaction: (id: number) => Promise<void>;
