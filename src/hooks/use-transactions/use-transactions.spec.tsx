@@ -1,5 +1,6 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 
+import { TransactionInput } from '../../types/transaction';
 import { storageTransactions } from '../../utils/storage';
 import {
   TransactionsProvider,
@@ -17,20 +18,57 @@ const makeSut = () => {
   return renderHook(() => useTransactions(), { wrapper });
 };
 
+const dateMock = new Date('2022-08-18');
+
 describe("useTransactions", () => {
+  beforeAll(() => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(dateMock);
+  });
+  
   beforeEach(() => {
     window.localStorage.clear();
   });
 
-  it("should load initial transactions correctly", async () => {
-    const firstRender = makeSut();
+  describe('transactions', () => {
+    it("should load initial transactions correctly", async () => {
+      const firstRender = makeSut();
+  
+      expect(firstRender.result.current.transactions).toEqual([]);
+  
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(transactionsMock));
+  
+      const secondRender = makeSut();
+  
+      expect(secondRender.result.current.transactions).toEqual(transactionsMock);
+    });
+  });
 
-    expect(firstRender.result.current.transactions).toEqual([]);
+  describe('addTransaction()', () => {
+    it("should add new transaction to transactions state", async () => {
+      const { result } = makeSut();
+  
+      expect(result.current.transactions).toEqual([]);
 
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(transactionsMock));
+      const { amount, category, title, type } = transactionsMock[0];
+      const transactionInput: TransactionInput = {
+        amount,
+        category,
+        title,
+        type
+      };
 
-    const secondRender = makeSut();
+      act(() => {
+        result.current.addTransaction(transactionInput);
+      });
 
-    expect(secondRender.result.current.transactions).toEqual(transactionsMock);
+      const transaction = {
+        ...transactionInput,
+        id: dateMock.getTime(),
+        createdAt: dateMock,
+      };
+
+      expect(result.current.transactions).toEqual([transaction]);
+    });
   });
 });
