@@ -9,6 +9,8 @@ import {
 } from ".";
 import { transactionsMock } from "../../mocks";
 
+storageTransactions.add = jest.fn();
+
 const STORAGE_KEY = storageTransactions.key;
 
 const makeSut = () => {
@@ -69,6 +71,32 @@ describe("useTransactions", () => {
       };
 
       expect(result.current.transactions).toEqual([transaction]);
+    });
+    
+    it("should call storageTransactions.add with correct value", async () => {
+      const { result } = makeSut();
+  
+      expect(result.current.transactions).toEqual([]);
+  
+      const { amount, category, title, type } = transactionsMock[0];
+      const transactionInput: TransactionInput = {
+        amount,
+        category,
+        title,
+        type
+      };
+  
+      act(() => {
+        result.current.addTransaction(transactionInput);
+      });
+  
+      const transaction = {
+        ...transactionInput,
+        id: dateMock.getTime(),
+        createdAt: dateMock,
+      };
+  
+      expect(storageTransactions.add).toHaveBeenCalledWith(transaction);
     });
   });
 });
