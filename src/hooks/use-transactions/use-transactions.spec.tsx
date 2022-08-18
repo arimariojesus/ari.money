@@ -104,6 +104,21 @@ describe("useTransactions", () => {
   });
 
   describe('delTransaction()', () => {
+    it("should call storageTransactions.remove with correct value", async () => {
+      const removeSpy = jest.spyOn(storageTransactions, 'remove');
+      
+      const { result } = makeSut();
+
+      act(() => {
+        result.current.delTransaction(transactionsMock[0].id);
+      });
+
+      expect(removeSpy).toHaveBeenCalledWith(transactionsMock[0].id);
+
+      removeSpy.mockReset();
+      removeSpy.mockRestore();
+    });
+    
     it("should delete transaction from transactions state", async () => {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(transactionsMock));
       
