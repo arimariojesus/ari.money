@@ -1,4 +1,4 @@
-import { useTransactions } from "../../hooks/useTransactions";
+import { useTransactions } from "../../hooks/use-transactions";
 import { formatCurrencyValue, formatDateTime } from "../../utils";
 import minusImg from "../../assets/minus.svg";
 import * as S from "./styles";

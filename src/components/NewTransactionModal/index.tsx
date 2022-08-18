@@ -4,7 +4,7 @@ import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import closeImg from "../../assets/close.svg";
 import Modal from "react-modal";
-import { useTransactions } from "../../hooks/useTransactions";
+import { useTransactions } from "../../hooks/use-transactions";
 
 import * as S from "./styles";
 

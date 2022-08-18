@@ -1,7 +1,7 @@
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
 import totalImg from '../../assets/total.svg';
-import { useTransactions } from '../../hooks/useTransactions';
+import { useTransactions } from '../../hooks/use-transactions';
 import { formatCurrencyValue } from '../../utils';
 
 import * as S from './styles';

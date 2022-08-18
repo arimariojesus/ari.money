@@ -1,6 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react";
 import { ReactElement } from "react";
-import { TransactionsProvider } from "../hooks/useTransactions";
+import { TransactionsProvider } from "../hooks/use-transactions";
 
 type CustomRenderProps = Omit<RenderOptions, 'queries'>;
 
