@@ -9,8 +9,6 @@ import {
 } from ".";
 import { transactionsMock } from "../../mocks";
 
-storageTransactions.add = jest.fn();
-
 const STORAGE_KEY = storageTransactions.key;
 
 const makeSut = () => {
@@ -74,6 +72,8 @@ describe("useTransactions", () => {
     });
     
     it("should call storageTransactions.add with correct value", async () => {
+      const addSpy = jest.spyOn(storageTransactions, 'add');
+      
       const { result } = makeSut();
   
       expect(result.current.transactions).toEqual([]);
@@ -96,7 +96,10 @@ describe("useTransactions", () => {
         createdAt: dateMock,
       };
   
-      expect(storageTransactions.add).toHaveBeenCalledWith(transaction);
+      expect(addSpy).toHaveBeenCalledWith(transaction);
+
+      addSpy.mockReset();
+      addSpy.mockRestore();
     });
   });
 
