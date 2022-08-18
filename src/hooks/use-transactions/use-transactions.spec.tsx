@@ -99,4 +99,26 @@ describe("useTransactions", () => {
       expect(storageTransactions.add).toHaveBeenCalledWith(transaction);
     });
   });
+
+  describe('delTransaction()', () => {
+    it("should delete transaction from transactions state", async () => {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(transactionsMock));
+      
+      const { result } = makeSut();
+  
+      expect(result.current.transactions).toEqual(transactionsMock);
+
+      act(() => {
+        result.current.delTransaction(transactionsMock[0].id);
+      });
+
+      expect(result.current.transactions).toEqual(transactionsMock.slice(1));
+
+      act(() => {
+        result.current.delTransaction(transactionsMock[1].id);
+      });
+
+      expect(result.current.transactions).toEqual(transactionsMock.slice(2));
+    });
+  });
 });
