@@ -15,7 +15,7 @@ const makeSut = () => {
 };
 
 describe('UseFormValues Hook', () => {
-  it('should return formValues with same value of initialState passed', () => {
+  it('should return initially formValues correctly', () => {
     const { initialState, result } = makeSut();
     expect(result.current.formValues).toStrictEqual(initialState);
   });
