@@ -1,56 +1,52 @@
-import { useState, FormEvent, useMemo } from "react";
+import { FormEvent, useMemo } from "react";
+import Modal from "react-modal";
 
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import closeImg from "../../assets/close.svg";
-import Modal from "react-modal";
 import { useTransactions } from "../../hooks/use-transactions";
 
 import * as S from "./styles";
+import { TransactionInput } from "../../types/transaction";
+import { useFormValues } from "../../hooks/use-form-values";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-type TransactionType = "deposit" | "withdraw";
-
 export function NewTransactionModal({
   isOpen,
   onRequestClose,
 }: NewTransactionModalProps) {
   const { addTransaction } = useTransactions();
-
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState<number | undefined>(undefined);
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState<TransactionType>("deposit");
+  const {
+    formValues,
+    setFormValues,
+    handleChangeFormValues,
+    handleSubmitFormValues,
+    handleClearFormValues,
+  } = useFormValues<TransactionInput>({
+    amount: 0,
+    category: '',
+    title: '',
+    type: 'deposit',
+  });
 
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
 
-    if (amount === undefined) {
-      return;
-    }
-
-    const data = {
-      title,
-      amount,
-      category,
-      type,
-    };
-
-    await addTransaction(data);
-
-    setTitle("");
-    setAmount(0);
-    setCategory("");
+    await addTransaction(formValues);
+    handleClearFormValues();
     onRequestClose();
   }
 
   const canSubmit = useMemo(
-    () => title && category && !Number.isNaN(amount),
-    [title, amount, category]
+    () => 
+      formValues.title &&
+      formValues.category &&
+      !Number.isNaN(formValues.amount),
+    [formValues]
   );
 
   return (
@@ -68,28 +64,30 @@ export function NewTransactionModal({
         <img src={closeImg} alt="Fechar modal" />
       </button>
 
-      <S.Container onSubmit={handleCreateNewTransaction}>
+      <S.Container onSubmit={handleSubmitFormValues(handleCreateNewTransaction)}>
         <h2>Cadastrar transação</h2>
 
         <input
           type="text"
           placeholder="Título"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          value={formValues.title}
+          onChange={handleChangeFormValues}
         />
 
         <input
           type="number"
           placeholder="Valor"
-          value={amount}
-          onChange={(e) => setAmount(Number(e.target.value))}
+          name="amount"
+          value={formValues.amount}
+          onChange={handleChangeFormValues}
         />
 
         <S.TransactionTypeContainer>
           <S.RadioBox
             type="button"
-            onClick={() => setType("deposit")}
-            isActive={type === "deposit"}
+            onClick={() => setFormValues(prev => ({ ...prev, type: "deposit" }))}
+            isActive={formValues.type === "deposit"}
             activeColor="green"
           >
             <img src={incomeImg} alt="Entrada" />
@@ -98,8 +96,8 @@ export function NewTransactionModal({
 
           <S.RadioBox
             type="button"
-            onClick={() => setType("withdraw")}
-            isActive={type === "withdraw"}
+            onClick={() => setFormValues(prev => ({ ...prev, type: "withdraw" }))}
+            isActive={formValues.type === "withdraw"}
             activeColor="red"
           >
             <img src={outcomeImg} alt="Saída" />
@@ -110,8 +108,9 @@ export function NewTransactionModal({
         <input
           type="text"
           placeholder="Categoria"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          name="category"
+          value={formValues.category}
+          onChange={handleChangeFormValues}
         />
 
         <button type="submit" disabled={!canSubmit}>
