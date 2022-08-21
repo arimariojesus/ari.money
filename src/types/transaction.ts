@@ -1,7 +1,9 @@
+export type TransactionType = "deposit" | "withdraw";
+
 export interface Transaction {
   id: number;
   title: string;
-  type: "deposit" | "withdraw";
+  type: TransactionType;
   category: string;
   amount: number;
   createdAt: Date | string;
