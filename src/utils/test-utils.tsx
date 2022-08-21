@@ -5,7 +5,7 @@ import { TransactionsProvider } from "../hooks/use-transactions";
 type CustomRenderProps = Omit<RenderOptions, 'queries'>;
 
 const customRender = (ui: ReactElement, options?: CustomRenderProps) => {
-  render(
+  return render(
     <TransactionsProvider>
       {ui}
     </TransactionsProvider>,
