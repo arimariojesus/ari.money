@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 import { useFormValues } from ".";
 
 const makeSut = () => {
@@ -18,5 +18,20 @@ describe('UseFormValues Hook', () => {
   it('should return initially formValues correctly', () => {
     const { initialState, result } = makeSut();
     expect(result.current.formValues).toStrictEqual(initialState);
+  });
+  
+  it('should set formValues correctly', () => {
+    const { initialState, result } = makeSut();
+    
+    expect(result.current.formValues).toStrictEqual(initialState);
+
+    const changedValue = {
+      test: 100,
+    };
+    
+    act(() => {
+      result.current.setFormValues(changedValue);
+    });
+    expect(result.current.formValues).toStrictEqual(changedValue);
   });
 });
