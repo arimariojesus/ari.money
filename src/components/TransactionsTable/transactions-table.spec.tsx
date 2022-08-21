@@ -1,5 +1,5 @@
 import { TransactionsTable } from ".";
-import { render, screen, storageTransactions } from "../../utils";
+import { formatCurrencyValue, render, screen, storageTransactions } from "../../utils";
 import { transactionsMock } from "../../mocks";
 
 const { key } = storageTransactions;
@@ -32,5 +32,19 @@ describe('TransactionsTable Component', () => {
     render(<TransactionsTable />);
     
     expect(screen.getAllByRole('row')).toHaveLength(1);
+  });
+  
+  it('should render items correctly', () => {
+    const item = transactionsMock[0];
+    window.localStorage.setItem(key, JSON.stringify([item]));
+    
+    render(<TransactionsTable />);
+    
+    expect(screen.getByRole('cell', { name: item.title }))
+      .toHaveTextContent(item.title);
+    expect(screen.getByRole('cell', { name: formatCurrencyValue(item.amount) }))
+      .toHaveClass(item.type);
+    expect(screen.getByRole('cell', { name: formatCurrencyValue(item.amount) }))
+      .toHaveTextContent(new RegExp(`${item.amount}`));
   });
 });
