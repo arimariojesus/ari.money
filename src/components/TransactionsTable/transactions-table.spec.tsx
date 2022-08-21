@@ -1,6 +1,8 @@
 import { TransactionsTable } from ".";
-import { formatCurrencyValue, render, screen, storageTransactions } from "../../utils";
+import { formatCurrencyValue, render, screen, storageTransactions, within } from "../../utils";
 import { transactionsMock } from "../../mocks";
+
+import userEvent from "@testing-library/user-event";
 
 const { key } = storageTransactions;
 
@@ -46,5 +48,28 @@ describe('TransactionsTable Component', () => {
       .toHaveClass(item.type);
     expect(screen.getByRole('cell', { name: formatCurrencyValue(item.amount) }))
       .toHaveTextContent(new RegExp(`${item.amount}`));
+  });
+  
+  it('should remove correct item when click on remove button', () => {
+    window.localStorage.setItem(key, JSON.stringify(transactionsMock));
+    const itemsLenght = transactionsMock.length;
+    
+    const { unmount } = render(<TransactionsTable />);
+    
+    const firstItem = screen.getAllByRole('row')[1];
+    const removeButton = within(firstItem).getByRole('button', { name: /^remover/i });
+    
+    expect(screen.getAllByRole('row')).toHaveLength(itemsLenght + 1); // rowheader + items
+    expect(firstItem)
+      .toBeInTheDocument();
+
+    userEvent.click(removeButton);
+    
+    unmount();
+    render(<TransactionsTable />);
+    
+    expect(screen.getAllByRole('row')).toHaveLength((itemsLenght - 1) + 1); // rowheader + items
+    expect(firstItem)
+      .not.toBeInTheDocument();
   });
 });
