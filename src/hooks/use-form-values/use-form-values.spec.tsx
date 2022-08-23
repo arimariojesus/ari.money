@@ -105,6 +105,32 @@ describe('UseFormValues Hook', () => {
     expect(result.current.formValues.radio).toBe(true);
   });
   
+  it('should call submit callback', () => {
+    const { result } = makeSut();
+    const submitCallback = jest.fn();
+
+    const form = (
+      <form onSubmit={result.current.handleSubmitFormValues(submitCallback)}>
+        <input
+          type="text"
+          aria-label="text"
+          name="text"
+          onChange={result.current.handleChangeFormValues}
+        />
+        <button type="submit">Submit</button>
+      </form>
+    );
+
+    render(form);
+
+    act(() => {
+      const submitButton = screen.getByRole('button', { name: /submit/i });
+      userEvent.click(submitButton);
+    });
+
+    expect(submitCallback).toHaveBeenCalled();
+  });
+
   it('should clear formValues', () => {
     const { initialState, result } = makeSut();
     
