@@ -104,4 +104,24 @@ describe('UseFormValues Hook', () => {
     expect(result.current.formValues.checkbox).toBe(true);
     expect(result.current.formValues.radio).toBe(true);
   });
+  
+  it('should clear formValues', () => {
+    const { initialState, result } = makeSut();
+    
+    expect(result.current.formValues).toStrictEqual(initialState);
+
+    const changedValue = {
+      test: 100,
+    };
+    
+    act(() => {
+      result.current.setFormValues(changedValue);
+    });
+    expect(result.current.formValues).toStrictEqual(changedValue);
+    
+    act(() => {
+      result.current.handleClearFormValues();
+    });
+    expect(result.current.formValues).toStrictEqual(initialState);
+  });
 });
