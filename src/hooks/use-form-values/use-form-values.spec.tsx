@@ -130,6 +130,38 @@ describe('UseFormValues Hook', () => {
 
     expect(submitCallback).toHaveBeenCalled();
   });
+  
+  it('should set loading state correctly', async () => {
+    jest.useFakeTimers();
+    const { result, waitForNextUpdate } = makeSut();
+    const submitCallback = () => new Promise(resolve => setTimeout(resolve, 0));
+
+    const form = (
+      // @ts-ignore
+      <form onSubmit={result.current.handleSubmitFormValues(submitCallback)}>
+        <input
+          type="text"
+          aria-label="text"
+          name="text"
+          onChange={result.current.handleChangeFormValues}
+        />
+        <button type="submit">Submit</button>
+      </form>
+    );
+
+    render(form);
+    expect(result.current.loadingFormValues).toBe(false);
+
+    act(() => {
+      const submitButton = screen.getByRole('button', { name: /submit/i });
+      userEvent.click(submitButton);
+    });
+
+    expect(result.current.loadingFormValues).toBe(true);
+    jest.runAllTimers();
+    await waitForNextUpdate();
+    expect(result.current.loadingFormValues).toBe(false);
+  });
 
   it('should clear formValues', () => {
     const { initialState, result } = makeSut();
