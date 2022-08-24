@@ -26,4 +26,11 @@ describe("NewTransactionModal Component", () => {
     const modal = screen.queryByRole('dialog');
     expect(modal).toBeNull();
   });
+  
+  it("should show modal the when isOpen is true", () => {
+    makeSut(true);
+
+    const modal = screen.queryByRole('dialog');
+    expect(modal).toBeInTheDocument();
+  });
 });
