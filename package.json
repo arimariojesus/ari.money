@@ -44,6 +44,9 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "ignorePatterns": [
+      "cypress/**/*"
+    ],
     "extends": [
       "react-app",
       "react-app/jest"
